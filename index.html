@@ -115,6 +115,20 @@ th{background:var(--grey-50);color:var(--ink-900);font-weight:600;font-size:.85r
 td.num,th.num{text-align:right}
 footer{border-top:1px solid var(--grey-200);padding:32px 20px;text-align:center;color:var(--grey-600);font-size:.9rem}
 footer .wordmark{font-size:1.1rem}
+/* Zoom */
+figure.chart img,figure.photo img{cursor:zoom-in}
+figure.chart{position:relative}
+.zoom-hint{position:absolute;right:14px;top:14px;display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--grey-200);border-radius:999px;background:rgba(255,255,255,.92);color:var(--ink-900);font:600 .8rem var(--font);cursor:pointer}
+.zoom-hint:hover{border-color:var(--cyan-500);color:var(--cyan-700)}
+.lb{position:fixed;inset:0;z-index:60;background:rgba(35,31,32,.94);display:none;flex-direction:column}
+.lb.open{display:flex}
+.lb-bar{display:flex;align-items:center;gap:8px;height:56px;padding:0 12px;color:#fff;flex:none}
+.lb-bar .t{flex:1;font-size:.9rem;color:var(--grey-300);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-left:6px}
+.lb-bar button{min-width:40px;height:40px;padding:0 10px;border:1px solid rgba(255,255,255,.3);border-radius:6px;background:transparent;color:#fff;font:600 1.1rem var(--font);cursor:pointer}
+.lb-bar button:hover{border-color:var(--cyan-500);color:var(--cyan-500)}
+.lb-stage{flex:1;overflow:auto;display:flex;touch-action:pan-x pan-y pinch-zoom}
+.lb-stage img{margin:auto;display:block;max-width:none;background:#fff;border-radius:6px;cursor:zoom-in;user-select:none}
+.lb-stage.zoomed img{cursor:zoom-out}
 @media (max-width:640px){.cover img{object-position:78% 70%}.bar .current{display:none}.menu-btn .lbl{display:none}.menu-btn{padding:0 10px}body{font-size:1.06rem}.lead{font-size:1.15rem}}
 </style>
 </head>
@@ -230,6 +244,10 @@ footer .wordmark{font-size:1.1rem}
 </section>
 </main>
 <footer><span class="wordmark">BAHANA<i>.</i></span><br>Data and narratives for a more informed, critical and engaged society.</footer>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Zoomed image">
+  <div class="lb-bar"><span class="t" id="lbT"></span><button id="lbOut" aria-label="Zoom out">&minus;</button><button id="lbIn" aria-label="Zoom in">+</button><button id="lbFit" aria-label="Fit to screen">Fit</button><button id="lbX" aria-label="Close">&times;</button></div>
+  <div class="lb-stage" id="lbS"><img id="lbI" alt=""></div>
+</div>
 <script>
 (function(){
   var t=document.getElementById('title');
@@ -274,6 +292,33 @@ footer .wordmark{font-size:1.1rem}
   }
   window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); onScroll();
   if(location.hash){var el=document.getElementById(location.hash.slice(1)); if(el) setTimeout(function(){el.scrollIntoView();},60);}
+  /* zoom lightbox */
+  var lb=document.getElementById('lb'),S=document.getElementById('lbS'),I=document.getElementById('lbI'),T=document.getElementById('lbT'),last=null,scale=1,fit=1;
+  function apply(){I.style.width=Math.round(I.naturalWidth*scale)+'px';S.classList.toggle('zoomed',scale>fit+0.01);}
+  function fitScale(){var w=S.clientWidth-24,h=S.clientHeight-24;return Math.min(1,w/I.naturalWidth,h/I.naturalHeight);}
+  function setScale(n,cx,cy){var r=S.getBoundingClientRect();cx=cx==null?r.width/2:cx;cy=cy==null?r.height/2:cy;
+    var px=(S.scrollLeft+cx)/(I.offsetWidth||1),py=(S.scrollTop+cy)/(I.offsetHeight||1);
+    scale=Math.max(fit,Math.min(4,n));apply();S.scrollLeft=px*I.offsetWidth-cx;S.scrollTop=py*I.offsetHeight-cy;}
+  function openLb(img){last=img;I.src=img.src;I.alt=img.alt;var cap=img.closest('figure').querySelector('figcaption');T.textContent=cap?cap.textContent:img.alt;
+    lb.classList.add('open');body.style.overflow='hidden';
+    var go=function(){fit=fitScale();scale=fit;apply();};I.complete&&I.naturalWidth?go():I.onload=go;document.getElementById('lbX').focus();}
+  function closeLb(){lb.classList.remove('open');body.style.overflow='';if(last)last.focus&&last.focus();}
+  document.querySelectorAll('figure.chart img, figure.photo img').forEach(function(img){
+    img.setAttribute('tabindex','0');img.setAttribute('role','button');img.setAttribute('aria-label',(img.alt||'Image')+'. Open zoomable view');
+    img.addEventListener('click',function(){openLb(img);});
+    img.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openLb(img);}});
+    if(img.closest('figure.chart')){var b=document.createElement('button');b.className='zoom-hint';b.type='button';b.innerHTML='&#8853; Zoom';b.setAttribute('aria-label','Zoom chart');b.addEventListener('click',function(){openLb(img);});img.closest('figure').appendChild(b);}
+  });
+  I.addEventListener('click',function(e){var r=S.getBoundingClientRect();setScale(scale>fit+0.01?fit:Math.max(1,fit*2),e.clientX-r.left,e.clientY-r.top);});
+  document.getElementById('lbIn').onclick=function(){setScale(scale*1.5);};
+  document.getElementById('lbOut').onclick=function(){setScale(scale/1.5);};
+  document.getElementById('lbFit').onclick=function(){setScale(fit);};
+  document.getElementById('lbX').onclick=closeLb;
+  S.addEventListener('click',function(e){if(e.target===S)closeLb();});
+  S.addEventListener('wheel',function(e){if(e.ctrlKey){e.preventDefault();var r=S.getBoundingClientRect();setScale(scale*(e.deltaY<0?1.15:1/1.15),e.clientX-r.left,e.clientY-r.top);}},{passive:false});
+  window.addEventListener('resize',function(){if(lb.classList.contains('open')){var f=fitScale();if(scale<=fit+0.01){fit=f;setScale(f);}else fit=f;}});
+  document.addEventListener('keydown',function(e){if(!lb.classList.contains('open'))return;
+    if(e.key==='Escape')closeLb(); if(e.key==='+'||e.key==='=')setScale(scale*1.5); if(e.key==='-')setScale(scale/1.5); if(e.key==='0')setScale(fit);});
 })();
 </script>
 </body>
