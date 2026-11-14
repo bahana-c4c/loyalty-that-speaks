@@ -142,7 +142,7 @@ footer .wordmark{font-size:1.1rem}
     <p class="eyebrow">Bahana &middot; Essay</p>
     <h1 id="title">Loyalty That Speaks: What Digital Campaigns Can and Cannot Do for Indonesian Democracy</h1>
     <p class="lead">By speaking to conservative worldviews, our campaigns got hundreds of thousands of Indonesians to watch "dry" content about democracy, for a few US cents each. As with most paid ads, though, very few viewers took the next step. And a short video asking viewers to demand better public transport did not measurably move the belief that keeps democracy vulnerable in Indonesia. Attention, it turns out, is the easy part; we believe organizing is what turns it into action.</p>
-    <p class="byline" id="byline">14 November 2026 · Paramita Mohamad</p>
+    <p class="byline" id="byline">By <strong>Paramita Mohamad</strong></p>
   </div>
 </header>
 <main>
@@ -236,7 +236,6 @@ footer .wordmark{font-size:1.1rem}
   var m=t.innerHTML.match(/^(.*?):\s*(.*)$/);
   if(m){t.innerHTML=m[1]+'<span class="sub">'+m[2]+'</span>';}
   var by=document.getElementById('byline');
-  by.innerHTML=by.innerHTML.replace(/·\s*(.+)$/,'· By <strong>$1</strong>');
   document.querySelectorAll('figure.photo img').forEach(function(img){
     function f(){ if(img.naturalHeight>img.naturalWidth) img.parentNode.classList.add('portrait'); }
     img.complete?f():img.addEventListener('load',f);
