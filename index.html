@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Loyalty That Speaks: What Digital Campaigns Can and Cannot Do for Indonesian Democracy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cyan-50:#effaff;--cyan-100:#d7f0fc;--cyan-400:#2bc6f5;--cyan-500:#00bff2;--cyan-600:#00a3d6;--cyan-700:#0083ad;
+  --ink-900:#231f20;--ink-800:#34302f;--grey-600:#595a5c;--grey-500:#76777a;--grey-300:#c2c3c5;--grey-200:#dedfe1;--grey-100:#eef0f1;--grey-50:#f6f7f8;--white:#fff;
+  --font:"Source Sans 3","Source Sans Pro",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  --radius-sm:6px;--radius-md:10px;--radius-lg:16px;
+  --shadow-lg:0 12px 32px rgba(35,31,32,.12),0 4px 8px rgba(35,31,32,.05);
+  --ease:cubic-bezier(0.2,0,0,1);
+  --prose:720px;--wide:900px;--bar:60px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:calc(var(--bar) + 16px)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{margin:0;background:var(--white);color:var(--ink-800);font-family:var(--font);font-size:1.125rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+a{color:var(--cyan-700);text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:2px}
+a:hover{color:var(--ink-900)}
+:focus-visible{outline:3px solid var(--cyan-400);outline-offset:2px;border-radius:3px}
+
+/* Top bar */
+.bar{position:sticky;top:0;z-index:30;height:var(--bar);display:flex;align-items:center;gap:16px;padding:0 20px;background:rgba(255,255,255,.94);backdrop-filter:saturate(1.2) blur(8px);border-bottom:1px solid var(--grey-200)}
+.menu-btn{display:inline-flex;align-items:center;gap:10px;height:40px;padding:0 14px 0 10px;border:1px solid var(--grey-300);border-radius:var(--radius-sm);background:var(--white);color:var(--ink-900);font:600 .95rem var(--font);cursor:pointer;transition:background .12s var(--ease),border-color .12s var(--ease)}
+.menu-btn:hover{background:var(--grey-50);border-color:var(--ink-900)}
+.burger{width:20px;height:14px;position:relative;display:inline-block}
+.burger span{position:absolute;left:0;right:0;height:2px;background:var(--ink-900);border-radius:2px;transition:transform .2s var(--ease),opacity .2s var(--ease)}
+.burger span:nth-child(1){top:0}.burger span:nth-child(2){top:6px}.burger span:nth-child(3){top:12px}
+.menu-btn[aria-expanded="true"] .burger span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.menu-btn[aria-expanded="true"] .burger span:nth-child(2){opacity:0}
+.menu-btn[aria-expanded="true"] .burger span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+.wordmark{font-weight:900;letter-spacing:-.02em;font-size:1.35rem;color:var(--ink-900);text-decoration:none}
+.wordmark i{font-style:normal;color:var(--cyan-500)}
+.bar .current{margin-left:auto;font-size:.9rem;color:var(--grey-600);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:45vw}
+.progress{position:absolute;left:0;bottom:-1px;height:3px;width:0;background:var(--cyan-500)}
+
+/* Drawer */
+.scrim{position:fixed;inset:0;z-index:40;background:rgba(35,31,32,.45);opacity:0;pointer-events:none;transition:opacity .2s var(--ease)}
+.drawer{position:fixed;z-index:50;top:0;left:0;bottom:0;width:min(360px,88vw);background:var(--ink-900);color:var(--white);transform:translateX(-102%);visibility:hidden;transition:transform .28s var(--ease),visibility 0s linear .28s;display:flex;flex-direction:column;box-shadow:var(--shadow-lg)}
+body.nav-open .scrim{opacity:1;pointer-events:auto}
+body.nav-open .drawer{transform:none;visibility:visible;transition:transform .28s var(--ease),visibility 0s}
+.drawer header{display:flex;align-items:center;justify-content:space-between;height:var(--bar);padding:0 16px 0 24px;border-bottom:1px solid rgba(255,255,255,.12)}
+.drawer .wordmark{color:var(--white)}
+.close-btn{width:40px;height:40px;border:1px solid rgba(255,255,255,.25);border-radius:var(--radius-sm);background:transparent;color:var(--white);font-size:1.4rem;line-height:1;cursor:pointer}
+.close-btn:hover{border-color:var(--cyan-500);color:var(--cyan-500)}
+.drawer .eyebrow{margin:24px 24px 8px;color:var(--grey-300)}
+.drawer ol{list-style:none;margin:0;padding:0 12px 24px;overflow-y:auto;counter-reset:s}
+.drawer li{counter-increment:s}
+.drawer li a{display:flex;gap:14px;padding:12px;border-radius:var(--radius-sm);color:var(--white);text-decoration:none;font-weight:600;line-height:1.3}
+.drawer li a::before{content:counter(s,decimal-leading-zero);color:var(--grey-500);font-weight:600;font-size:.85rem;padding-top:2px;min-width:22px}
+.drawer li a:hover{background:rgba(255,255,255,.07)}
+.drawer li a.active{background:rgba(0,191,242,.14);color:var(--cyan-500)}
+.drawer li a.active::before{color:var(--cyan-500)}
+.drawer .top-link{margin:auto 24px 24px;color:var(--cyan-100);font-size:.95rem}
+
+.eyebrow{font-size:.78rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase}
+
+/* Hero */
+.hero{position:relative;overflow:hidden;padding:72px 20px 56px;border-bottom:1px solid var(--grey-200)}
+.hero::before{content:"";position:absolute;width:900px;height:900px;right:-420px;top:-480px;border-radius:50%;background:radial-gradient(circle,rgba(0,191,242,.28) 0%,rgba(215,240,252,.55) 32%,rgba(255,255,255,0) 66%);pointer-events:none}
+.hero-inner{position:relative;max-width:var(--wide);margin:0 auto}
+.hero .eyebrow{color:var(--cyan-700);margin:0 0 16px}
+h1{margin:0;font-weight:900;font-size:clamp(2.2rem,5.2vw,3.75rem);line-height:1.08;letter-spacing:-.02em;color:var(--ink-900);max-width:16ch}
+h1 .sub{display:block;font-weight:700;font-size:.52em;line-height:1.25;letter-spacing:-.01em;color:var(--grey-600);margin-top:14px;max-width:none}
+.lead{margin:28px 0 0;max-width:var(--prose);font-size:1.3rem;line-height:1.55;color:var(--ink-900)}
+.byline{margin-top:24px;font-size:.95rem;color:var(--grey-600)}
+.byline strong{color:var(--ink-900);font-weight:600}
+
+/* Body */
+main{padding:24px 20px 96px}
+.sec{max-width:var(--prose);margin:0 auto;padding-top:40px}
+h2{margin:24px 0 16px;font-weight:700;font-size:clamp(1.6rem,3vw,1.875rem);line-height:1.25;letter-spacing:-.01em;color:var(--ink-900)}
+h2::before{content:"";display:block;width:40px;height:4px;border-radius:2px;background:var(--cyan-500);margin-bottom:18px}
+h3{font-size:1.25rem;color:var(--ink-900);margin:28px 0 8px}
+p{margin:0 0 1.1em}
+strong{color:var(--ink-900)}
+figure{margin:32px 0}
+figure img{display:block;width:100%;height:auto}
+figure.chart{margin-left:calc(50% - min(50vw - 20px, var(--wide)/2));margin-right:calc(50% - min(50vw - 20px, var(--wide)/2));border:1px solid var(--grey-200);border-radius:var(--radius-lg);padding:20px 20px 0;background:var(--white)}
+figure.chart figcaption{margin:12px -20px 0;padding:14px 20px;border-top:1px solid var(--grey-200);background:var(--grey-50);border-radius:0 0 var(--radius-lg) var(--radius-lg)}
+figure.photo img{border-radius:var(--radius-md);max-height:640px;object-fit:cover}
+figure.photo.portrait img{max-width:420px;margin:0 auto}
+figcaption{font-size:.92rem;line-height:1.5;color:var(--grey-600);margin-top:10px}
+ul,ol{padding-left:1.3em;margin:0 0 1.1em}
+li{margin:.3em 0}
+#references ul{list-style:none;padding:0}
+#references li{font-size:.95rem;padding-left:1.5em;text-indent:-1.5em}
+#notes p{font-size:1rem}
+.table-cap{font-weight:600;color:var(--ink-900);font-size:1rem;margin:32px 0 10px}
+.table-wrap{overflow-x:auto;margin:0 0 24px;border:1px solid var(--grey-200);border-radius:var(--radius-md)}
+table{border-collapse:collapse;width:100%;font-size:.95rem;line-height:1.45}
+th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--grey-200)}
+tr:last-child td{border-bottom:0}
+th{background:var(--grey-50);color:var(--ink-900);font-weight:600;font-size:.85rem}
+td.num,th.num{text-align:right}
+footer{border-top:1px solid var(--grey-200);padding:32px 20px;text-align:center;color:var(--grey-600);font-size:.9rem}
+footer .wordmark{font-size:1.1rem}
+@media (max-width:640px){.bar .current{display:none}.menu-btn .lbl{display:none}.menu-btn{padding:0 10px}body{font-size:1.06rem}.lead{font-size:1.15rem}}
+</style>
+</head>
+<body>
+<div class="bar" role="banner">
+  <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="drawer"><span class="burger" aria-hidden="true"><span></span><span></span><span></span></span><span class="lbl">Sections</span></button>
+  <a class="wordmark" href="#top">BAHANA<i>.</i></a>
+  <span class="current" id="current" aria-live="polite"></span>
+  <div class="progress" id="progress"></div>
+</div>
+<div class="scrim" id="scrim"></div>
+<nav class="drawer" id="drawer" aria-label="Sections" aria-hidden="true">
+  <header><span class="wordmark">BAHANA<i>.</i></span><button class="close-btn" id="closeBtn" aria-label="Close menu">&times;</button></header>
+  <p class="eyebrow">Skip to a section</p>
+  <ol id="navList"><li><a href="#the-street-speaks-of-a-broken-deal" data-target="the-street-speaks-of-a-broken-deal">The street speaks of a broken deal</a></li><li><a href="#the-loyalty-that-silences" data-target="the-loyalty-that-silences">The loyalty that silences</a></li><li><a href="#attention-for-the-price-of-a-few-cents" data-target="attention-for-the-price-of-a-few-cents">Attention for the price of a few cents</a></li><li><a href="#why-people-notice-but-do-not-act-internal-exit" data-target="why-people-notice-but-do-not-act-internal-exit">Why people notice but do not act: internal exit</a></li><li><a href="#can-loyalty-shift-from-the-rulers-to-the-people" data-target="can-loyalty-shift-from-the-rulers-to-the-people">Can loyalty shift from the rulers to the people?</a></li><li><a href="#what-we-would-do-differently" data-target="what-we-would-do-differently">What we would do differently</a></li><li><a href="#what-would-help" data-target="what-would-help">What would help</a></li><li><a href="#notes" data-target="notes">Notes</a></li><li><a href="#references" data-target="references">References</a></li></ol>
+  <a class="top-link" href="#top" data-target="top">&uarr; Back to the top</a>
+</nav>
+
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <p class="eyebrow">Bahana &middot; Essay</p>
+    <h1 id="title">Loyalty That Speaks: What Digital Campaigns Can and Cannot Do for Indonesian Democracy</h1>
+    <p class="lead">By speaking to conservative worldviews, our campaigns got hundreds of thousands of Indonesians to watch "dry" content about democracy, for a few US cents each. As with most paid ads, though, very few viewers took the next step. And a short video asking viewers to demand better public transport did not measurably move the belief that keeps democracy vulnerable in Indonesia. Attention, it turns out, is the easy part; we believe organizing is what turns it into action.</p>
+    <p class="byline" id="byline">14 November 2026 · Paramita Mohamad</p>
+  </div>
+</header>
+<main>
+<section id="the-street-speaks-of-a-broken-deal" class="sec"><h2>The street speaks of a broken deal</h2>
+<p>Indonesia's students are back on the streets. Since June 2026, student coalitions have marched against wasteful state spending, rising prices, and the military's creeping return to civilian affairs (<a href="https://www.indoleft.org/statements/2026-06-12/avoid-using-military-to-deal-with-demos-government-must-listen-to-protesters.html">Amnesty International Indonesia, 2026</a>). On October 28, the Komite Sadar coalition rallied with five demands on the environment, the economy, civil liberties, corruption, and the cost of education (<a href="https://www.gebrak.id/?p=60514">Gebrak.id, 2026</a>; <a href="https://katadata.co.id/amp/berita/nasional/6ae1ed03ee5a0/lima-tuntutan-aliansi-bem-mahasiswa-dalam-unjuk-rasa-sumpah-pemuda">Katadata, 2026</a>).</p>
+<p>Their slogans are revealing. Marchers raised three fingers: aware that we are being extorted, burned, and impoverished (<em>sadar dipalak, sadar dibakar, sadar dimiskinkan</em>; <a href="https://www.nu.or.id/nasional/massa-aksi-indonesia-sadar-kompak-acungkan-tiga-jari-sadar-dipalak-sadar-dibakar-sadar-dimiskinkan-dOYur">NU Online, 2026</a>).</p>
+<figure class="photo"><img src="img/indonesia-sadar.jpg" alt="Indonesia Sadar poster: a raised three-finger hand above the words Sadar dipalak, sadar dibakar, sadar dimiskinkan"><figcaption>The #IndonesiaSadar poster: "Aware we are extorted. Aware we are burned. Aware we are impoverished." Source: Warta Desa.</figcaption></figure>
+<p>Their rallying cry was "keep your promises or go" (<em>tepati atau pergi</em>). Even the civil liberties demand asks the government to restore (<em>kembalikan</em>) freedom of expression. Rights, too, are framed as a loss to undo.</p>
+<figure class="photo"><img src="img/tepati-atau-pergi.webp" alt="Student protester holding a sign reading Tepati atau Pergi (keep your promises or go)"><figcaption>"Keep your promises or go" (Tepati atau Pergi) at a student protest in Jakarta. Photo: Aktualita.co.</figcaption></figure>
+<p>That distinction matters because protests flare and fade. The next erosion of democracy will most likely arrive when the streets have gone quiet. It will be accepted or resisted by citizens who never marched, and most of them do not think about democracy the way activists do.</p>
+<p>This piece asks whether digital campaigns can reach those people, and what happens after they do. Drawing on four digital campaigns, two experiments, and focus groups from 2022 to 2026, we argue two things. <strong>Framing built on conservative worldviews seems to buy attention cheaply. But without organizing, we suspect, attention leaks away into</strong> <strong>what we call internal exit.</strong> Meanwhile, how most Indonesians see their government has not yet changed.</p>
+<p>We borrow a lens from Albert Hirschman's <em>Exit, Voice, and Loyalty</em> (Hirschman, 1970). When an institution fails its members, Hirschman observed, they can leave it (exit) or speak up and push for repair (voice). Loyalty shapes which path they take. Our question is what kind of loyalty Indonesians feel toward their government, and whether a campaign can turn it into voice.</p>
+</section>
+<section id="the-loyalty-that-silences" class="sec"><h2>The loyalty that silences</h2>
+<p>Surveys keep finding high support for democracy in Indonesia, yet the country has drifted toward competitive authoritarianism with little public resistance. Either the support is hollow, or the word means something different to the people who say it.</p>
+<p>Our 2025 national survey set out to learn which (<a href="https://labnarasi.id/topik/bagaimana-masyarakat-memahami-demokrasi-dan-ruang-sipil-di-indonesia-2/">LabNarasi, 2026</a>). Rather than asking 2,520 adults across 51 districts whether they supported democracy, we described 35 conditions in an imaginary country. We asked, face to face, whether each was democratic and whether they would want to live there.</p>
+<p>The answer was sobering. People do want democracy: those who called a country democratic also wanted to live in it. But the democracy they want has illiberal elements (Figure 1). Two-thirds said it is democratic that criticism must come with a solution, and six in ten said neighbors may evict a same-sex couple.</p>
+<figure class="chart"><img src="img/figure1.png" alt="The ten illiberal conditions Indonesians most often call democratic"><figcaption><strong>Figure 1.</strong> The ten illiberal conditions Indonesians most often call democratic. Bahana national survey, face to face, n = 2,520 adults in 51 districts, 10 March–24 April 2025 (LabNarasi, 2026).</figcaption></figure>
+<p>Beneath these answers lies conservative moral ground. Moral psychologists describe six intuitions that people use to judge right from wrong: authority, purity, loyalty, care, proportionality (getting what you deserve), and equality. We measured them with an Indonesian version of the Moral Foundations Questionnaire (version 2). People rate statements about each intuition from 1 to 5. Indonesians scored highest on authority (4.0), purity (3.9), and loyalty (3.8), and lowest on equality (3.0). Scholars read this pattern as a conservative worldview.</p>
+<figure class="chart"><img src="img/figure2.png" alt="How strongly Indonesians hold six moral intuitions, measured with the Moral Foundations Questionnaire (version 2)"><figcaption><strong>Figure 2.</strong> How strongly Indonesians hold six moral intuitions, measured with the Moral Foundations Questionnaire (version 2). Same survey: n = 2,520 adults, 10 March–24 April 2025 (LabNarasi, 2026).</figcaption></figure>
+<p>We focus on one illiberal idea: support for the Family State (<em>Negara Kekeluargaan</em>). It is close to organicism, the view of society as one living body (<a href="https://www.routledge.com/Illiberal-Democracy-in-Indonesia-The-Ideology-of-the-Family-State/Bourchier/p/book/9780415180221">Bourchier, 2015</a>; <a href="https://www.insideindonesia.org/review-the-ideology-of-the-family-state">Reeve, 2017</a>). In this view, the government is the head of the family and the only rightful source of order. Like a father with his children, it permits and disciplines its citizens. Speaking up feels like disloyalty, and staying quiet feels like keeping the peace. None of it feels like domination. It feels like unity or harmony.</p>
+<p>In Hirschman's terms, this is loyalty that silences. Our 2025 focus groups in Delta Pawan, Bontang, and Sorong heard exactly this. Participants understood that they ought to speak up, but the fear of being seen as anti-government held them back more than anything else.</p>
+<p>The usual answer is to correct the public's understanding. The evidence warns against this: when lower-income Indonesians were shown a procedural definition of democracy, their support for democracy fell (<a href="https://doi.org/10.1093/ijpor/edaa012">Ananda and Bol, 2021</a>). So we do not sell "liberal democracy." In Indonesia, "liberal" carries heavy baggage. In 2005, the Indonesian Ulema Council declared religious liberalism forbidden (MUI, 2005). In 2022, President Joko Widodo complained that Indonesia's democracy had become "very, very liberal" for an Eastern people (<a href="https://www.indoleft.org/news/2022-08-23/what-freedoms-are-lacking-asks-jokowi-on-declining-freedom-of-speech.html">Indoleft, 2022</a>).</p>
+<p>We name the enemy the arbitrary use of power (<em>kesewenang-wenangan</em>). We plan to take this frame public, but only after testing it, because the word cuts both ways. The dictionary defines it as acting as one pleases, without regard for the rights of others (KBBI, n.d.), so it can describe anyone. A conservative audience could aim "high-handedness" (<em>sewenang-wenang</em>) at activists, rather than at those in power. After the Women's March Jakarta in November 2026, a senior official of the Ministry of Religious Affairs warned against rising "LGBT campaigns" (<a href="https://khazanah.republika.co.id/berita/tobesv430/gerakan-lgbt-di-aksi-womens-march-kemenag-ajak-jaga-nilai-dan-etika-bangsa">Republika, 2026</a>). So the test must also ask whom people think the word is about.</p>
+<p>Still, one group is worth betting on. Roughly 28% of Indonesians, whom we call Conservative Quasi-Democrats, hold conservative moral values. Yet they see the Family State, majoritarianism, and the concentration of power as less democratic than other Indonesians do. Like every other group, however, they reject LGBTQ rights. They are also the least trusting of civil society organizations (CSOs), a fact that will matter later.</p>
+</section>
+<section id="attention-for-the-price-of-a-few-cents" class="sec"><h2>Attention for the price of a few cents</h2>
+<p>The first lesson is encouraging. Dry topics like election rules and public transport rarely trend, yet they can win the attention of many Indonesians quickly and cheaply. In three campaigns, an engaged viewer cost us a few US cents (Figure 3; full figures in Table 1 in the Notes).</p>
+<figure class="chart"><img src="img/figure3.png" alt="Cost of engaged attention in three campaigns"><figcaption><strong>Figure 3.</strong> Cost of engaged attention in three campaigns. US dollars at Rp18,000 per dollar; cost per viewer computed from spend and viewers, rounded to the nearest cent. Full figures, with rupiah, in Table 1 (Notes).</figcaption></figure>
+<p>These numbers measure attention, not persuasion. No campaign above measured whether viewers understood or accepted the message. Reach counts accounts, not people, and every viewer figure in Figure 3 is an estimate.</p>
+<p>Why might attention have come so cheaply? All three campaigns named an unfair rule: a game your favorite politician can never win, taxes paid for poor service, a referee planted before the match. Each appealed to proportionality: people should get what they pay for, and rules should not cheat. Two of them added loyalty. In the presidential threshold campaign's online game, people picked any candidate, real or fictional, and then saw that the rule gave their pick zero chance. The Bandung campaign, Bandung People Speak Up (<em>Urang Bandung Lantang Bersuara</em>), recast complaint as loyalty to the city: you speak up because you love Bandung.</p>
+<p>We tested parts of this before the Bandung campaign went live. In an online experiment with 3,516 respondents (December 2025 to January 2026), one-minute videos asking people to demand better public transporat raised their belief that they could make a difference. They also raised people's intention to act by 5 to 6 percentage points. In eight Bandung focus groups in March 2026, every segment accepted the taxpayer message and felt safe sharing it, while the "protest is patriotic" line fell flat.</p>
+<p>What we cannot yet claim is that proportionality is <em>why</em> the attention was cheap. The Election Law Bill ads show why. They cost 41% less per thousand impressions than our Meta average. If the frame had made them cheap, we would expect Meta to rate them well, because Meta charges less for ads that viewers welcome. It did the opposite: it ranked three of the four explainer videos below average for quality. Meta bases that rating mainly on how often viewers hide or report an ad, and a low rating usually raises the cost, not lowers it. So something besides the framing kept the cost down, most likely broad targeting and low-cost placements.</p>
+</section>
+<section id="why-people-notice-but-do-not-act-internal-exit" class="sec"><h2>Why people notice but do not act: internal exit</h2>
+<p>The second lesson is less comfortable. When a message names a problem but gives people no safe way to act and no one to act with, we suspect they choose internal exit over voice. By internal exit we mean withdrawing from participation without leaving the country. People abstain from the vote, leave the problem to the government, or simply do not take the next step. We say "internal" because Hirschman's exit means leaving, and these citizens stay where they are.</p>
+<p>Internal exit was the norm long before our campaigns began. People in our 2025 focus groups said they feared speaking up. Our 2025 national survey found that few Indonesians do anything political beyond voting, even though turnout is among the highest in the world. We then watched internal exit in an experiment and in campaign comments.</p>
+<p>The experiment comes from our climate work, where we could observe what people did with their own money. In this experiment (about 2,000 respondents, April–May 2026, unpublished), we showed people a video that framed the energy transition as a personal benefit. It raised support for energy policy and for fuel-subsidy reform. Yet real donations from the survey payment fell by 5.6 percentage points compared with the placebo group, and petition signing did not change. Attitudes rose while costly action fell, in the same people. Our untested explanation: the video's closing call to press the government quietly handed responsibility to the state. A rival explanation is just as plausible: framing the transition as a personal benefit may have crowded out the moral reasons to give.</p>
+<p>The campaign comments offer an illustration, not evidence. We coded 2,492 comments on the Election Law Bill ads. A call to abstain from voting was the most common response, at 22.6%, and it was there from the first days. Commenters choose themselves and skew older, so this shows a pull toward internal exit among those who spoke up, not how common it is. We also launched that campaign without testing its message, so a weak message may explain part of this response.</p>
+<p>Attention did not turn into action on its own. In all four campaigns, including Dorong Transisi Energi, our 2024–25 campaign on the energy transition, only a small share of the people who looked took the next step. That is normal for paid ads (Figure 4; full figures in Table 2 in the Notes).</p>
+<figure class="chart"><img src="img/figure4.png" alt="From seeing an ad to the final action in four campaigns, as shares of accounts reached"><figcaption><strong>Figure 4.</strong> From seeing an ad to the final action in four campaigns, as shares of accounts reached. Sources: SPD campaign report (2022); Dorong Transisi Energi ad monitoring sheet; RUU Pemilu and FDTB Phase 2 final monitoring sheets (2026). Full figures in Table 2 (Notes).</figcaption></figure>
+<p>Of everyone who saw an ad, fewer than 1 in 3,000 accounts took the final action (Figure 4). In three campaigns, one final action cost USD 1.70 to 6.90, within the USD 1.40 to 8.30 that Indonesian advertisers reportedly pay for a sale or sign-up (an industry blog, <a href="https://olakses.com/benchmark-cpa-meta-ads-indonesia/">Olakses, 2026</a>). Only Bandung cost more, at about USD 33 per site visit. So the low rate does not mean our framing failed. It means ads alone do not move people to act.</p>
+<p>A community's own channels may do better. In Bandung we co-campaigned with Forum Diskusi Transportasi Bandung, a citizens' forum on public transport. While the campaign ran, the forum's own websites sent 143 visits to the campaign site, more than twice the 60 that came from Facebook, where our ads ran (by the site's own analytics). It is an early sign, not proof: these are visits, not people, and the Facebook count also includes organic posts.</p>
+<p>Two obstacles made the final action more expensive than it had to be. The first is how we bought the ads. We paid mostly for video views, not clicks, so the platforms found us viewers rather than people likely to click. The second is the platforms themselves. Links in short-video captions are hard to click, and platforms want users to stay in their apps. Yet these obstacles do not explain everything. In the climate experiment described above, people could donate without leaving the survey, and they still gave less.</p>
+<p>So the obstacles are not only technical. We suspect many people also see acting as the government's job, not theirs.</p>
+</section>
+<section id="can-loyalty-shift-from-the-rulers-to-the-people" class="sec"><h2>Can loyalty shift from the rulers to the people?</h2>
+<p>The third lesson matters most. We think that view rests on the Family State belief: the government is the head of the family and the only rightful source of order. If so, better ad buying and easier links will only go so far.</p>
+<p>In the online experiment with the Bandung transport videos (described earlier), support for the Family State fell by only 0.06 to 0.07 points on a six-point scale, too small to tell apart from no change. But the video asked viewers to demand better public transport; it did not address the belief directly, so this was a side measurement rather than a real test. Yet the same video raised people's intention to act by 5 to 6 percentage points. So people can become more willing to speak up while still seeing the government as a father figure. People saw the video only once, though, so this does not prove the belief cannot move.</p>
+<p>Why not leave the belief alone, then, and only ask people to act? Because of quiet acceptance. A citizen who still believes the government knows best may speak up once about buses or election rules, and then accept the next erosion of democracy.</p>
+<p>The Family State belief is a kind of loyalty to the government, like a child's loyalty to a father. Quiet acceptance is what that loyalty produces. But Hirschman also showed that loyalty does not have to silence. It can be the very thing that keeps people from leaving and pushes them to speak up. So the choice is not between loyalty and voice. It is about where people place their loyalty. Placed in a government that must not be questioned, loyalty silences them. Placed in the people as the true owners of power, and in the rules that keep leaders answerable to them, it lets them speak.</p>
+<p>Our next test asks whether a short message can move that loyalty. In mid-2027, a national face-to-face survey of about 2,650 people will compare two short audio messages with a neutral one. Unlike our campaigns so far, it will measure whether opinions change, not only who saw a message. One uses a family analogy: a good father is open to being questioned by his children, and even corrected by his wife. The other uses taxes: we all pay and services are poor, so demanding better and asking for accountability are not defiance. The two go to different lengths. The taxes message casts the government as our manager or caretaker (<em>pengurus</em>), not the head of the family. The family message keeps the father but makes him answerable to his family. Whatever the results, we will publish them.</p>
+</section>
+<section id="what-we-would-do-differently" class="sec"><h2>What we would do differently</h2>
+<p>Framing buys attention. We believe organizing turns it into action, though our campaigns did not test this. By organizing we mean civil society and community groups bringing people together to act, again and again. Our campaigns treated attention as the finish line. In our experiment, a video raised people's intention to act. In the field, fewer than 1 in 3,000 accounts that saw an ad took the final action. Something has to close that gap. In the long work of protecting democracy, it is only the start.</p>
+<p>Three changes follow:</p>
+<p><strong>First, we would co-campaign with communities people already belong to</strong>. The Conservative Quasi-Democrats, the group we are betting on, trust CSOs the least, so an NGO's web page is a weak next step. The Forum Diskusi Transportasi Bandung points to another way: people join this citizens' forum as residents of Bandung, not as supporters of an NGO. Our Bandung campaign did not test this, though. We paid for ads that reached strangers, and no one, including us, gave the forum support or resources to organize the people they reached.</p>
+<p><strong>Second, we would make the first step to real action small and place it where people already are</strong>. A comment, a reply, a message, or a pledge inside the platform asks far less than a link to another website. The community organizer can take it from there.</p>
+<p><strong>Third, we would build messages around people's right to choose, not around a leader</strong>. In the presidential threshold game, what people defended was their own right to choose, not a favorite politician. This matters in Indonesia. As loyalty to parties collapsed, from about 80% of voters identifying with a party after 1998 to 7% by 2014, charismatic leaders appealed to voters directly, and the rivalry between Jokowi and Prabowo left the country more divided than it had been in decades (<a href="https://carnegieendowment.org/research/2020/08/political-polarization-in-south-and-southeast-asia-old-divisions-new-dangers">Warburton, 2020</a>).</p>
+</section>
+<section id="what-would-help" class="sec"><h2>What would help</h2>
+<p>Two questions remain open: how to turn cheap attention into action, and whether the Family State belief can move. No single organization can answer them alone.</p>
+<p>Three kinds of support would move the field forward.</p>
+<p><strong>The first is shared research</strong>. Our reading of the climate experiment is that asking people to "press the government" may lead them to leave the work to the state. But nobody has yet tested that call against asking people to act themselves, while measuring what people actually do. Several organizations could share the cost and the data of such a test. Together they could also build a shared stock of pre-tested messages for any coalition to use when a policy window opens.</p>
+<p><strong>The second is support for organizing.</strong> Reach is the easy part to buy. What turns attention into action is organizing in communities people already belong to. Funders could back community organizers directly, and help NGOs become better organizers.</p>
+<p><strong>The third is patience measured in years</strong>. Learning whether anything moves the Family State belief will take repeated measurement, not a single campaign.</p>
+<p>Attention, we have learned, is cheap. Loyalty is not. The work ahead, which no one can do alone, is to turn cheap attention into loyalty that speaks.</p>
+</section>
+<section id="notes" class="sec"><h2>Notes</h2>
+<p><strong>About this piece.</strong> Written by Paramita Mohamad of Communication for Change (C4C) and Bahana for Session 8, Digital-First Strategies and Narrative Power, at the Movement to Power Exchange in Bangkok on November 16, 2026.</p>
+<p><strong>How to read the evidence.</strong> <em>Tested</em> means a randomized experiment with a comparison group. <em>Observed</em> means campaign monitoring data with no comparison group, so it shows what happened, not why. <em>Our reading</em> means our interpretation, not yet tested. <em>Preliminary</em> figures may change: the Bandung campaign report closes on November 18, 2026, and we will update this page then.</p>
+<p><strong>Money.</strong> All US dollar amounts use Rp18,000 per dollar, rounded from IDR 18,096 on November 10, 2026 (Katadata Databoks, 2026). The 2022 figures use the same rate. The rupiah was stronger in 2022, so at the rate of the time those costs would be somewhat higher in dollars.</p>
+<p><strong>Unpublished work.</strong> The online video experiment and the Green Barometer experiment (the climate experiment in the text) are not yet published; figures here come from internal reports by Bahana (2026). In the Green Barometer experiment, the personal-benefit video raised support for energy policy by 0.13 standard deviations and acceptance of fuel-subsidy reform by 0.25 standard deviations, compared with the placebo group.</p>
+<p><strong>The presidential threshold.</strong> The Constitutional Court struck down the presidential threshold in January 2025, in a case brought by four students of UIN Sunan Kalijaga (<a href="https://nasional.kontan.co.id/news/mk-hapus-ketentuan-ambang-batas-pencalonan-presiden-atau-presidential-threshold">Kontan, 2025</a>). We shared their cause, but we claim no part in that ruling.</p>
+<p><strong>Open data.</strong> Anyone can use our data to check our findings or run their own analysis. The Green Barometer survey on public demand for a fast and fair energy transition, with its questionnaire, raw data, and codebook, is on <a href="https://labnarasi.id/instrumen/niat-publik-untuk-menuntut-transisi-energi-yang-cepat-dan-adil/">LabNarasi</a> (in Indonesian; the site asks to fill a form before download). Data from our 2025 national survey on the meaning of democracy will be added there soon.</p>
+<p class="table-cap"><strong>Table 1:</strong> Cost of engaged attention in three campaigns. US dollar amounts use Rp18,000 per dollar; rupiah figures in brackets match our reports to funders and partners.</p>
+<div class="table-wrap"><table><tr><th>Campaign</th><th>What it asked people to care about</th><th class="num">Ad spend</th><th>Engaged attention</th><th class="num">Cost per engaged viewer</th></tr><tr><td>Presidential threshold (2022), with Sindikasi Pemilu dan Demokrasi</td><td>A rule that lets party elites, not voters, decide who can run for president</td><td class="num">USD 2,180 (Rp39.2m)</td><td>28,528 people who played the game to the end</td><td class="num">about 8 cents (Rp1,373)</td></tr><tr><td>Bandung public transport, Phase 2 (Aug–Sep 2026), with Forum Diskusi Transportasi Bandung</td><td>We pay taxes, so we can demand decent public transport</td><td class="num">USD 3,710 (Rp66.7m)</td><td>an estimated 165,615 people watched at least 75% of the video, about 2.1% of Bandung Raya's estimated 7.76 million social media users (preliminary number)</td><td class="num">about 2 cents (Rp403)</td></tr><tr><td>Election Law Bill (RUU Pemilu, Aug–Oct 2026), with Perludem and the civil society coalition</td><td>Election rules that tilt the game before anyone votes</td><td class="num">USD 5,580 (Rp100.4m)</td><td>an estimated 166,126 people watched at least 75% of the explainer, about 0.09% of the estimated 182 million eligible 2029 voters who use the internet</td><td class="num">about 3 cents (Rp605)</td></tr></table></div>
+<p class="table-cap"><strong>Table 2:</strong> Attention and the next step in four campaigns. The denominators differ, so read the pattern rather than the ranking.</p>
+<div class="table-wrap"><table><tr><th>Campaign</th><th>Attention indicators</th><th>Next step taken</th><th class="num">Rate</th></tr><tr><td>Presidential threshold (2022)</td><td>28,528 people who played the game to the end</td><td>397 petition signatures from the game site</td><td class="num">about 1.4%</td></tr><tr><td>Election Law Bill (2026)</td><td>an estimated 166,126 explainer viewers</td><td>804 tracked visitors to the campaign site</td><td class="num">about 0.5%</td></tr><tr><td>Dorong Transisi Energi (2024–25)</td><td>3,911,931 views of at least 75% of the video ads</td><td>10,173 read 75% of the web page</td><td class="num">about 0.26%</td></tr><tr><td>Bandung public transport, Phase 2 (2026)</td><td>an estimated 165,615 video viewers</td><td>114 visits to the campaign site (preliminary)</td><td class="num">about 0.07%</td></tr></table></div>
+<p class="table-cap"><strong>Table 3:</strong> Who funded and ran the work</p>
+<div class="table-wrap"><table><tr><th>Work</th><th>Partners</th><th>Funder</th></tr><tr><td>Presidential threshold campaign (2022)</td><td>Sindikasi Pemilu dan Demokrasi</td><td>Sindikasi Pemilu dan Demokrasi</td></tr><tr><td>National survey on the meaning of democracy (2025)</td><td>Aurelia Ananda, Griffith University (co-investigator)</td><td>Kurawal Foundation</td></tr><tr><td>Online video experiment (Dec 2025–Jan 2026)</td><td>Swayable as data collector through web panel</td><td>Luminate (Swayable credits, in kind)</td></tr><tr><td>Bandung focus groups (March 2026)</td><td>Cimigo, as data collector</td><td>Open Society Foundations, through Asia Democracy Network</td></tr><tr><td>Bandung public transport campaign (2026)</td><td>Forum Diskusi Transportasi Bandung, as co-campaigner</td></tr><tr><td>Election Law Bill campaign (2026)</td><td>Perludem and Koalisi Masyarakat Sipil untuk RUU Pemilu, as co-campaigners</td></tr></table></div>
+</section>
+<section id="references" class="sec"><h2>References</h2>
+<ul><li>Amnesty International Indonesia. (2026, June 12). <a href="https://www.indoleft.org/statements/2026-06-12/avoid-using-military-to-deal-with-demos-government-must-listen-to-protesters.html">Avoid using military to deal with demos, government must listen to protesters</a> [Press release, via Indoleft].</li><li>Ananda, A., and Bol, D. (2021). <a href="https://doi.org/10.1093/ijpor/edaa012">Does knowing democracy affect answers to democratic support questions? A survey experiment in Indonesia</a>. <em>International Journal of Public Opinion Research</em>, 33(2), 433–443.</li><li>Bourchier, D. (2015). <a href="https://www.routledge.com/Illiberal-Democracy-in-Indonesia-The-Ideology-of-the-Family-State/Bourchier/p/book/9780415180221"><em>Illiberal Democracy in Indonesia: The Ideology of the Family State</em></a>. Routledge.</li><li>Gebrak.id. (2026). <a href="https://www.gebrak.id/?p=60514">BEM UI dan Komite Sadar kembali demo 28 Oktober, bawa seruan "Tepati atau Pergi"</a>.</li><li>Hirschman, A. O. (1970). <em>Exit, Voice, and Loyalty: Responses to Decline in Firms, Organizations, and States.</em> Harvard University Press.</li><li>Indoleft. (2022, August 23). <a href="https://www.indoleft.org/news/2022-08-23/what-freedoms-are-lacking-asks-jokowi-on-declining-freedom-of-speech.html">'What freedoms are lacking?' asks Jokowi on declining freedom of speech</a>.</li><li>Katadata. (2026, October 28). <a href="https://katadata.co.id/amp/berita/nasional/6ae1ed03ee5a0/lima-tuntutan-aliansi-bem-mahasiswa-dalam-unjuk-rasa-sumpah-pemuda">Lima tuntutan aliansi BEM mahasiswa dalam unjuk rasa Sumpah Pemuda</a>.</li><li>Katadata Databoks. (2026, November 10). <a href="https://databoks.katadata.co.id/en/market/statistics/32ec67c22c32882/rupiah-exchange-rate-weakens-to-idr-18096-per-us-dollar-tuesday-10-november-2026">Rupiah exchange rate weakens to IDR 18,096 per US dollar</a>.</li><li>KBBI (Kamus Besar Bahasa Indonesia). (n.d.). <a href="https://kbbi.web.id/wenang">Wenang</a>.</li><li>Kontan. (2025, January 2). <a href="https://nasional.kontan.co.id/news/mk-hapus-ketentuan-ambang-batas-pencalonan-presiden-atau-presidential-threshold">MK hapus ketentuan ambang batas pencalonan presiden atau presidential threshold</a>.</li><li>LabNarasi. (2026). <a href="https://labnarasi.id/topik/bagaimana-masyarakat-memahami-demokrasi-dan-ruang-sipil-di-indonesia-2/">Bagaimana masyarakat memahami demokrasi dan ruang sipil di Indonesia</a>.</li><li>LabNarasi. (2026). <a href="https://labnarasi.id/instrumen/niat-publik-untuk-menuntut-transisi-energi-yang-cepat-dan-adil/">Niat publik untuk menuntut transisi energi yang cepat dan adil</a>.</li><li>Majelis Ulama Indonesia (MUI). (2005). <a href="https://archive.org/download/BerbagaiAGAMA-FILSAFAT_201510/FatwaMuiTtgPluralisme_LiberalismeDanSekularismeAgama.pdf">Fatwa Nomor 7/MUNAS VII/MUI/11/2005 tentang pluralisme, liberalisme dan sekularisme agama</a>.</li><li>NU Online. (2026, October 28). <a href="https://www.nu.or.id/nasional/massa-aksi-indonesia-sadar-kompak-acungkan-tiga-jari-sadar-dipalak-sadar-dibakar-sadar-dimiskinkan-dOYur">Massa aksi Indonesia Sadar kompak acungkan tiga jari: Sadar dipalak, sadar dibakar, sadar dimiskinkan</a>.</li><li>Reeve, D. (2017, October 6). <a href="https://www.insideindonesia.org/review-the-ideology-of-the-family-state">Review: The ideology of the family state</a>. <em>Inside Indonesia</em>, 129.</li><li>Republika. (2026, November 11). <a href="https://khazanah.republika.co.id/berita/tobesv430/gerakan-lgbt-di-aksi-womens-march-kemenag-ajak-jaga-nilai-dan-etika-bangsa">Gerakan LGBT di aksi Women's March, Kemenag ajak jaga nilai dan etika bangsa</a>.</li><li>Warburton, E. (2020). Deepening polarization and democratic decline in Indonesia. In T. Carothers and A. O'Donohue (Eds.), <a href="https://carnegieendowment.org/research/2020/08/political-polarization-in-south-and-southeast-asia-old-divisions-new-dangers">Political polarization in South and Southeast Asia: Old divisions, new dangers</a>. Carnegie Endowment for International Peace.</li></ul>
+</section>
+</main>
+<footer><span class="wordmark">BAHANA<i>.</i></span><br>Data and narratives for a more informed, critical and engaged society.</footer>
+<script>
+(function(){
+  var t=document.getElementById('title');
+  var m=t.innerHTML.match(/^(.*?):\s*(.*)$/);
+  if(m){t.innerHTML=m[1]+'<span class="sub">'+m[2]+'</span>';}
+  var by=document.getElementById('byline');
+  by.innerHTML=by.innerHTML.replace(/·\s*(.+)$/,'· By <strong>$1</strong>');
+  document.querySelectorAll('figure.photo img').forEach(function(img){
+    function f(){ if(img.naturalHeight>img.naturalWidth) img.parentNode.classList.add('portrait'); }
+    img.complete?f():img.addEventListener('load',f);
+  });
+  var body=document.body, btn=document.getElementById('menuBtn'), drawer=document.getElementById('drawer'),
+      scrim=document.getElementById('scrim'), closeBtn=document.getElementById('closeBtn');
+  function open(){body.classList.add('nav-open');btn.setAttribute('aria-expanded','true');drawer.setAttribute('aria-hidden','false');
+    var a=drawer.querySelector('a.active')||drawer.querySelector('a'); setTimeout(function(){a&&a.focus();},50);}
+  function close(ret){body.classList.remove('nav-open');btn.setAttribute('aria-expanded','false');drawer.setAttribute('aria-hidden','true'); if(ret!==false) btn.focus();}
+  btn.addEventListener('click',function(){body.classList.contains('nav-open')?close():open();});
+  closeBtn.addEventListener('click',function(){close();});
+  scrim.addEventListener('click',function(){close();});
+  document.addEventListener('keydown',function(e){
+    if(!body.classList.contains('nav-open')) return;
+    if(e.key==='Escape'){close();}
+    if(e.key==='Tab'){var f=drawer.querySelectorAll('a,button'),first=f[0],last=f[f.length-1];
+      if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}
+  });
+  drawer.querySelectorAll('a[data-target]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      e.preventDefault(); var el=document.getElementById(a.dataset.target); close(false);
+      if(el){ el.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
+        try{history.replaceState(null,'','#'+a.dataset.target);}catch(_){}
+        var h=el.querySelector('h2')||el; h.setAttribute('tabindex','-1'); h.focus({preventScroll:true}); }
+    });
+  });
+  var secs=[].slice.call(document.querySelectorAll('section.sec')), links={}, cur=document.getElementById('current'), prog=document.getElementById('progress');
+  drawer.querySelectorAll('#navList a').forEach(function(a){links[a.dataset.target]=a;});
+  function onScroll(){
+    var y=window.scrollY+120, active=null;
+    secs.forEach(function(s){ if(s.offsetTop<=y) active=s; });
+    Object.keys(links).forEach(function(k){links[k].classList.toggle('active',active&&active.id===k);});
+    cur.textContent=active?active.querySelector('h2').textContent:'';
+    var h=document.documentElement.scrollHeight-window.innerHeight; prog.style.width=(h>0?Math.min(100,window.scrollY/h*100):0)+'%';
+  }
+  window.addEventListener('scroll',onScroll,{passive:true}); window.addEventListener('resize',onScroll); onScroll();
+  if(location.hash){var el=document.getElementById(location.hash.slice(1)); if(el) setTimeout(function(){el.scrollIntoView();},60);}
+})();
+</script>
+</body>
+</html>
